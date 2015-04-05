@@ -10,6 +10,7 @@ from webapp2_extras.routes import DomainRoute
 from controllers.sessions import *
 from controllers.users import *
 from controllers.meetings import *
+from controllers.meeting_requests import *
 
 # Requested URLs that are not listed here,
 # will return 404
@@ -27,7 +28,10 @@ ROUTES = [
 
 	        # Meetings
 	        Route(r'/meetings', handler=MeetingController),
-	        
+            routes.PathPrefixRoute(r'/meetings/<meeting_id:\d+>', [
+                Route(r'/requests', handler=MeetingRequestController, methods=['GET']),
+                Route(r'/join', handler=MeetingRequestController, methods=['POST'])
+            ])  
 	    ])
     ])
 ]
