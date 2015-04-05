@@ -20,7 +20,7 @@ class SignupHandler(base.BaseHandler):
     @login_required
     def post(self):
 
-        key = ndb.Key(UserData, self.user.user_id())
+        key = self.user_key
         user = key.get()
 
         if user is None: # User does not exist, go ahead and create
