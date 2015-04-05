@@ -66,5 +66,14 @@ class Meeting(BaseModel):
 
 
 class MeetingRequest(BaseModel):
-    user = ndb.KeyProperty(kind=UserData, required=True)
+    meeting = ndb.KeyProperty(kind=Meeting, required=True)
     state = ndb.StringProperty(default='pending', choices=['pending', 'accepted', 'rejected'])
+
+    @classmethod
+    def for_meeting(cls, meeting_id):
+        return cls.query(cls.meeting==ndb.Key(Meeting, meeting_id)).order(-cls.created)
+
+    def to_dict(self):
+        return super(MeetingRequest, self).to_dict(exclude=['meeting'])
+
+
