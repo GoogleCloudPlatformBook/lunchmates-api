@@ -15,7 +15,7 @@ INCORRECT_CREDENTIALS = base.VALIDATION_ERROR + '.invalid_credentials'
 PASSWORD_FIELD = 'password'
 NAME_FIELD = 'name'
 
-class SignupHandler(base.BaseHandler):
+class AuthHandler(base.BaseHandler):
 
     @login_required
     def post(self):
