@@ -10,7 +10,7 @@ class MeetingRequestController(base.BaseHandler):
         
     @login_required
     def dispatch(self):        
-        super(MeetingController, self).dispatch()
+        super(MeetingRequestController, self).dispatch()
 
     def get(self, meeting_id): # Returns the requests of a meeting
 
@@ -26,6 +26,7 @@ class MeetingRequestController(base.BaseHandler):
 
     def post(self, meeting_id): # Posts a request to join a meeting
 
-        request = MeetingRequest(parent=self.user_key, Key(Meeting, meeting_id))
+        # TODO Check if there's an invitation already
+        request = MeetingRequest(parent=self.user_key, meeting=ndb.Key(Meeting, meeting_id))
         request.put()
         self.respond(201, request)
