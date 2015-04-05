@@ -4,6 +4,9 @@ import webapp2
 import json
 import re
 
+from model.model import UserData
+
+from google.appengine.ext import ndb
 from google.appengine.api import users
 
 from util.json_serializer import JsonSerializer
@@ -53,6 +56,10 @@ class BaseHandler(webapp2.RequestHandler):
     def user(self):
         user = users.get_current_user()
         return user
+
+    @webapp2.cached_property
+    def user_key(self):
+        return ndb.Key(UserData, self.user.user_id())
 
     def setupResponse(self):
         self.request.path_info_pop()
