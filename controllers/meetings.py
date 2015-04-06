@@ -24,6 +24,7 @@ class MeetingController(base.BaseHandler):
         self.respond(200, results)
 
 
+    @ndb.transactional(xg=True)
     def post(self):
 
         if self.inputBody:
@@ -33,8 +34,13 @@ class MeetingController(base.BaseHandler):
             self.inputBody['latest_possible_start'] = format_to_date(self.inputBody['latest_possible_start'], DATE_FORMAT_STR)
             self.inputBody['location'] = format_to_geo_pos(self.inputBody['location'])
 
-            meeting = Meeting(**self.inputBody)
+            # Put meeting
+            meeting = Meeting(parent=self.user_key, **self.inputBody)
             meeting.put()
+
+            # Increment meeting counter for user
+            MeetingCounter.increment(self.user_key)
+
             self.respond(201, meeting)
 
         else:

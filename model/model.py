@@ -65,6 +65,20 @@ class Meeting(BaseModel):
     tags = ndb.StringProperty(repeated=True)
 
 
+class MeetingCounter(ndb.Model):
+    count = ndb.IntegerProperty(default=0)
+
+    @classmethod
+    @ndb.transactional
+    def increment(cls, user_key):
+        counter = cls.get_by_id(user_key.id())
+        if counter is None:
+            counter = cls(id=user_key.id())
+
+        counter.count += 1
+        counter.put()
+
+
 class MeetingRequest(BaseModel):
     meeting = ndb.KeyProperty(kind=Meeting, required=True)
     state = ndb.StringProperty(default='pending', choices=['pending', 'accepted', 'rejected'])
