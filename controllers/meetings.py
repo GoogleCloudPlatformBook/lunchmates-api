@@ -3,8 +3,12 @@
 import base
 from base import login_required
 
+from google.appengine.api import memcache
+
 from util.format import *
 from model.model import *
+
+TOP_MEETINGS_KEY = "top_meetings"
 
 class MeetingController(base.BaseHandler):
             
@@ -14,12 +18,17 @@ class MeetingController(base.BaseHandler):
 
     def get(self):
 
-        results = []
+        results = memcache.get(TOP_MEETINGS_KEY)
 
-        query = Meeting.all()
+        if results is None:
 
-        for meeting in query:
-            results.append(meeting)
+            results = []
+            query = Meeting.all().fetch(30)
+
+            for meeting in query:
+                results.append(meeting)
+
+            memcache.set(TOP_MEETINGS_KEY, results, 30)
 
         self.respond(200, results)
 
