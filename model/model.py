@@ -31,8 +31,8 @@ class BaseModel(ndb.Model):
 
 class UserData(BaseModel):
     auth_provider = ndb.StringProperty(choices=[PROVIDER_GOOGLE, PROVIDER_FACEBOOK], required=True)
-    username = ndb.StringProperty(default='')
-    search_username = ndb.ComputedProperty(lambda self: unicodedata.normalize('NFKD', unicode(self.username)).encode('ascii','ignore').lower())
+    name = ndb.StringProperty(default='')
+    search_name = ndb.ComputedProperty(lambda self: unicodedata.normalize('NFKD', unicode(self.name)).encode('ascii','ignore').lower())
     email = ndb.StringProperty(required=True)
 
     @classmethod
