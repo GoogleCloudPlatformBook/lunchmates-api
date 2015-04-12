@@ -16,6 +16,7 @@ from controllers.meeting_requests import *
 
 # Task handlers
 from tasks.emails import *
+from tasks.requests import *
 
 # Requested URLs that are not listed here return with a 404
 
@@ -48,7 +49,10 @@ TASK_ROUTES = [
         routes.PathPrefixRoute(r'/tasks', [
 
             # Emails
-            Route(r'/email', handler=EmailTaskHandler)
+            Route(r'/email', handler=EmailTaskHandler),
+
+            # Send users a request summary of their pending incoming requests
+            Route(r'/request-summary', handler=RequestSummaryHandler)
         ])
     ])
 ]

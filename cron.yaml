@@ -1,0 +1,5 @@
+cron:
+
+- description: remind users about pending requests longer than 10 days
+  url: /tasks/request-summary
+  schedule: every monday 07:00
