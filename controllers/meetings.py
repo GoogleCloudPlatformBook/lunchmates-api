@@ -8,7 +8,7 @@ from google.appengine.api import memcache
 from util.format import *
 from model.model import *
 
-TOP_MEETINGS_KEY = "top_meetings"
+TOP_MEETINGS_KEY = 'top_meetings'
 
 class MeetingController(base.BaseHandler):
             
@@ -54,4 +54,4 @@ class MeetingController(base.BaseHandler):
             self.respond(201, meeting)
 
         else:
-            self.respond(422, {base.ERRORS: "Request must have a body"})
+            self.respond(422, {base.ERRORS: 'Request must have a body'})
