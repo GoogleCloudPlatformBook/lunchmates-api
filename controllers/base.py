@@ -33,13 +33,13 @@ AUTHORIZATION = 'Authorization'
 def login_required(handler):
     '''Requires that a user be logged in to access the resource'''
 
-    def check_login(self, *args, **kwargs):     
+    def user_or_redirect(self, *args, **kwargs):     
         if not self.user:
             return self.redirect(users.create_login_url(self.request.path))
         else:
             return handler(self, *args, **kwargs)
 
-    return check_login 
+    return user_or_redirect 
 
 class BaseHandler(webapp2.RequestHandler):
 
@@ -54,8 +54,7 @@ class BaseHandler(webapp2.RequestHandler):
 
     @webapp2.cached_property
     def user(self):
-        user = users.get_current_user()
-        return user
+        return users.get_current_user()
 
     @webapp2.cached_property
     def user_key(self):
