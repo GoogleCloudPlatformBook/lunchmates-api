@@ -39,12 +39,13 @@ class MeetingController(base.BaseHandler):
         if self.inputBody:
 
             # Pre-format
+            self.inputBody['owner'] = self.user_key
             self.inputBody['earliest_possible_start'] = format_to_date(self.inputBody['earliest_possible_start'], DATE_FORMAT_STR)
             self.inputBody['latest_possible_start'] = format_to_date(self.inputBody['latest_possible_start'], DATE_FORMAT_STR)
             self.inputBody['location'] = format_to_geo_pos(self.inputBody['location'])
 
             # Put meeting
-            meeting = Meeting(parent=self.user_key, **self.inputBody)
+            meeting = Meeting(**self.inputBody)
             meeting.put()
 
             # Increment meeting counter for user

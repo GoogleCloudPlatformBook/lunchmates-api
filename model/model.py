@@ -56,6 +56,7 @@ class UserData(BaseModel):
 
 
 class Meeting(BaseModel):
+    owner = ndb.KeyProperty(kind=UserData, required=True)
     venue_forsquare_id = ndb.StringProperty(required=True)
     location = ndb.GeoPtProperty()
     earliest_possible_start = ndb.DateTimeProperty(required=True)
