@@ -43,7 +43,7 @@ class UserData(BaseModel):
         
         if provider == PROVIDER_GOOGLE:
             user.email = external_user.email()
-            user.username = external_user.nickname()
+            user.name = external_user.nickname()
 
         elif provider == PROVIDER_FACEBOOK:
             pass
