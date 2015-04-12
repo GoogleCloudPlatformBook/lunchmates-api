@@ -5,8 +5,16 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+
+# Task queues & scheduled tasks
+- url: /tasks/.*
+  script: main.tasks
+  login: admin
+
+# Frontends
 - url: /.*
   script: main.app
+
 
 libraries:
 - name: webapp2

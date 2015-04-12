@@ -3,7 +3,7 @@
 import base
 from base import login_required
 
-from google.appengine.api import mail
+from google.appengine.api import taskqueue
 
 from util.format import *
 from model.model import *
@@ -33,18 +33,8 @@ class MeetingRequestController(base.BaseHandler):
         join_request = MeetingRequest(parent=self.user_key, meeting=meeting.key)
         join_request.put()
 
-        owner_email = meeting.owner.get().email
-        if mail.is_email_valid(owner_email):
-            self._send_join_request_notification(owner_email, self.user.nickname())
+        # Schedule task to send email
+        params = {'owner_id': meeting.owner.id(), 'nickname':self.user.nickname()}
+        taskqueue.add(queue_name='email', url='/tasks/email', params=params)
 
         self.respond(201, join_request)
-
-
-
-    def _send_join_request_notification(self, email_address, nickname):
-
-        sender_address = 'Lunch Mate <lunchmates@appid.appspotmail.com>'
-        subject = 'Request to join your meeting'
-        body = '%s has requested to join your meeting!' % nickname
-
-        mail.send_mail(sender_address, email_address, subject, body)

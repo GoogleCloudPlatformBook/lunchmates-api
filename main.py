@@ -14,9 +14,12 @@ from controllers.users import *
 from controllers.meetings import *
 from controllers.meeting_requests import *
 
+# Task handlers
+from tasks.emails import *
+
 # Requested URLs that are not listed here return with a 404
 
-ROUTES = [
+FRONTEND_ROUTES = [
     DomainRoute(config.subdomain, [ # Allowed domains
 
     	routes.PathPrefixRoute(r'/api', [
@@ -36,5 +39,17 @@ ROUTES = [
 	    ])
     ])
 ]
+app = webapp2.WSGIApplication(FRONTEND_ROUTES, debug=True)
 
-app = webapp2.WSGIApplication(ROUTES, debug=True)
+
+TASK_ROUTES = [
+    DomainRoute(config.subdomain, [ # Allowed domains
+
+        routes.PathPrefixRoute(r'/tasks', [
+
+            # Emails
+            Route(r'/email', handler=EmailTaskHandler)
+        ])
+    ])
+]
+tasks = webapp2.WSGIApplication(TASK_ROUTES, debug=True)
