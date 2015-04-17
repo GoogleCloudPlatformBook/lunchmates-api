@@ -8,7 +8,7 @@ from google.appengine.api import users
 PROVIDER_GOOGLE = 'google'
 PROVIDER_FACEBOOK = 'facebook'
 
-DATE_FORMAT_STR = '%Y-%m-%dT%H:%M'
+DATE_FORMAT_STR = '%Y-%m-%dT%H:%MZ'
 
 class BaseModel(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
