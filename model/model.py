@@ -85,8 +85,13 @@ class MeetingRequest(BaseModel):
     state = ndb.StringProperty(default='pending', choices=['pending', 'accepted', 'rejected'])
 
     @classmethod
-    def for_meeting(cls, meeting_id):
-        return cls.query(cls.meeting==ndb.Key(Meeting, meeting_id)).order(-cls.created)
+    def for_meeting(cls, meeting_id, state=None):
+        if state is None:
+            query = cls.query(cls.meeting==ndb.Key(Meeting, meeting_id))
+        else:
+            query = cls.query(cls.meeting==ndb.Key(Meeting, meeting_id), cls.state == state)
+
+        return query.order(-cls.created)
 
     def to_dict(self):
         return super(MeetingRequest, self).to_dict(exclude=['meeting'])

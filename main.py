@@ -15,6 +15,7 @@ from controllers.meetings import *
 from controllers.meeting_requests import *
 
 # Task handlers
+from tasks.meetings import *
 from tasks.emails import *
 from tasks.requests import *
 
@@ -47,6 +48,9 @@ TASK_ROUTES = [
     DomainRoute(config.subdomain, [ # Allowed domains
 
         routes.PathPrefixRoute(r'/tasks', [
+
+            # Notifications (Pub/Sub)
+            Route(r'/meetings/<meeting_id:\d+>/finished', handler='tasks.meetings.MeetingsTaskHandler:meetingFinished', methods=['POST']),
 
             # Emails
             Route(r'/email', handler=EmailTaskHandler),

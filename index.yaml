@@ -15,3 +15,10 @@ indexes:
   - name: meeting
   - name: created
     direction: desc
+
+- kind: MeetingRequest
+  properties:
+  - name: meeting
+  - name: state
+  - name: created
+    direction: desc
