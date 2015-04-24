@@ -14,7 +14,7 @@ from util.json_serializer import JsonSerializer
 class MeetingsTaskHandler(webapp2.RequestHandler):
     ''' This class receives and processes messages from Pub/Sub'''
 
-    def meetingFinished(self, meeting_id):
+    def meetingFinished(self):
 
         # Email information
         sender_address = 'Lunch Mate <lunchmates@appid.appspotmail.com>'
@@ -25,7 +25,8 @@ class MeetingsTaskHandler(webapp2.RequestHandler):
         message = json.loads(urllib.unquote(self.request.body).rstrip('='))
         message_data = base64.b64decode(str(message['message']['data']))
 
-        finish_timestamp = int(message_data)
+        attributes = message['message']['attributes']
+        meeting_id = attributes[0]['value']
 
         # Get all accepted meeting requests
         query = MeetingRequest.for_meeting(int(meeting_id), 'accepted')

@@ -50,7 +50,7 @@ TASK_ROUTES = [
         routes.PathPrefixRoute(r'/tasks', [
 
             # Notifications (Pub/Sub)
-            Route(r'/meetings/<meeting_id:\d+>/finished', handler='tasks.meetings.MeetingsTaskHandler:meetingFinished', methods=['POST']),
+            Route(r'/meetings/finished_event', handler='tasks.meetings.MeetingsTaskHandler:meetingFinished', methods=['POST']),
 
             # Emails
             Route(r'/email', handler=EmailTaskHandler),
