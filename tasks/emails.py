@@ -5,6 +5,7 @@ from google.appengine.api import mail
 
 from model.model import UserData
 
+
 class EmailTaskHandler(webapp2.RequestHandler):
 
     def post(self):
@@ -16,7 +17,9 @@ class EmailTaskHandler(webapp2.RequestHandler):
 
             nickname = self.request.get('nickname')
 
-            sender_address = 'Lunch Mate <lunchmates@lunch--mates.appspotmail.com>'
+            sender_address = 'Lunch Mate'
+            ' <lunchmates@lunch--mates.appspotmail.com>'
+
             subject = 'Request to join your meeting'
             body = '%s has requested to join your meeting!' % nickname
 

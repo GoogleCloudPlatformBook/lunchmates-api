@@ -5,9 +5,10 @@ from base import login_required
 
 from model.model import *
 
+
 class UserController(base.BaseHandler):
 
-    @login_required       
+    @login_required
     def get(self):
 
         results = []

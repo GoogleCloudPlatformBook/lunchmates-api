@@ -9,7 +9,6 @@ from google.appengine.api import mail
 
 from model.model import MeetingRequest
 
-from util.json_serializer import JsonSerializer
 
 class MeetingsTaskHandler(webapp2.RequestHandler):
     ''' This class receives and processes messages from Pub/Sub'''

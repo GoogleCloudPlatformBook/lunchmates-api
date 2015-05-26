@@ -10,15 +10,17 @@ from model.model import *
 
 TOP_MEETINGS_KEY = 'top_meetings'
 
+
 class MeetingController(base.BaseHandler):
-            
+
     @login_required
-    def dispatch(self):        
+    def dispatch(self):
         super(MeetingController, self).dispatch()
 
     def get(self):
 
-        results = memcache.get(TOP_MEETINGS_KEY) # TODO Handle error 
+        # You better handle the error
+        results = memcache.get(TOP_MEETINGS_KEY)
 
         if results is None:
 
@@ -32,7 +34,6 @@ class MeetingController(base.BaseHandler):
 
         self.respond(200, results)
 
-
     @ndb.transactional(xg=True)
     def post(self):
 
@@ -40,9 +41,14 @@ class MeetingController(base.BaseHandler):
 
             # Pre-format
             self.inputBody['owner'] = self.user_key
-            self.inputBody['earliest_possible_start'] = format_to_date(self.inputBody['earliest_possible_start'], DATE_FORMAT_STR)
-            self.inputBody['latest_possible_start'] = format_to_date(self.inputBody['latest_possible_start'], DATE_FORMAT_STR)
-            self.inputBody['location'] = format_to_geo_pos(self.inputBody['location'])
+            self.inputBody['earliest_possible_start'] = format_to_date(
+                self.inputBody['earliest_possible_start'], DATE_FORMAT_STR)
+
+            self.inputBody['latest_possible_start'] = format_to_date(
+                self.inputBody['latest_possible_start'], DATE_FORMAT_STR)
+
+            self.inputBody['location'] = format_to_geo_pos(
+                self.inputBody['location'])
 
             # Put meeting
             meeting = Meeting(**self.inputBody)

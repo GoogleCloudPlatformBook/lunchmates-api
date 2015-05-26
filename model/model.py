@@ -3,12 +3,12 @@
 import unicodedata
 
 from google.appengine.ext import ndb
-from google.appengine.api import users
 
 PROVIDER_GOOGLE = 'google'
 PROVIDER_FACEBOOK = 'facebook'
 
 DATE_FORMAT_STR = '%Y-%m-%dT%H:%MZ'
+
 
 class BaseModel(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True)
@@ -27,12 +27,13 @@ class BaseModel(ndb.Model):
 
     def __eq__(self, other):
         return self.key.id() == other.key.id()
-      
+
 
 class UserData(BaseModel):
 
     def normalize(self):
-        return unicodedata.normalize('NFKD', unicode(self.name)).encode('ascii','ignore').lower()
+        return unicodedata.normalize('NFKD', unicode(self.name)).encode(
+            'ascii', 'ignore').lower()
 
     name = ndb.StringProperty(default='')
     search_name = ndb.ComputedProperty(normalize)
@@ -42,7 +43,7 @@ class UserData(BaseModel):
     def create_user(cls, external_user, provider, user_key):
 
         user = UserData(key=user_key)
-        
+
         if provider == PROVIDER_GOOGLE:
             user.email = external_user.email()
             user.name = external_user.nickname()
@@ -64,7 +65,8 @@ class Meeting(BaseModel):
     earliest_possible_start = ndb.DateTimeProperty(required=True)
     latest_possible_start = ndb.DateTimeProperty()
     topic = ndb.StringProperty(required=True)
-    type = ndb.StringProperty(required=True, choices=['drink', 'lunch', 'brunch'])
+    type = ndb.StringProperty(required=True,
+                              choices=['drink', 'lunch', 'brunch'])
     tags = ndb.StringProperty(repeated=True)
 
 
@@ -84,18 +86,18 @@ class MeetingCounter(ndb.Model):
 
 class MeetingRequest(BaseModel):
     meeting = ndb.KeyProperty(kind=Meeting, required=True)
-    state = ndb.StringProperty(default='pending', choices=['pending', 'accepted', 'rejected'])
+    state = ndb.StringProperty(default='pending',
+                               choices=['pending', 'accepted', 'rejected'])
 
     @classmethod
     def for_meeting(cls, meeting_id, state=None):
         if state is None:
-            query = cls.query(cls.meeting==ndb.Key(Meeting, meeting_id))
+            query = cls.query(cls.meeting == ndb.Key(Meeting, meeting_id))
         else:
-            query = cls.query(cls.meeting==ndb.Key(Meeting, meeting_id), cls.state == state)
+            query = cls.query(cls.meeting == ndb.Key(Meeting, meeting_id),
+                              cls.state == state)
 
         return query.order(-cls.created)
 
     def to_dict(self):
         return super(MeetingRequest, self).to_dict(exclude=['meeting'])
-
-

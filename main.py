@@ -22,35 +22,43 @@ from tasks.requests import *
 # Requested URLs that are not listed here return with a 404
 
 FRONTEND_ROUTES = [
-    DomainRoute(config.subdomain, [ # Allowed domains
+    DomainRoute(config.subdomain, [
 
-    	routes.PathPrefixRoute(r'/api', [
+        # Allowed domains
+        routes.PathPrefixRoute(r'/api', [
 
-    		# Sessions: Do not expose, use just a means of testing
+            # Sessions: Do not expose, use just a means of testing
             Route(r'/authenticate', handler=AuthHandler),
 
-    		# Users
+            # Users
             Route(r'/users', handler=UserController),
 
-	        # Meetings
+            # Meetings
             Route(r'/meetings', handler=MeetingController),
             routes.PathPrefixRoute(r'/meetings/<meeting_id:\d+>', [
-                Route(r'/requests', handler=MeetingRequestController, methods=['GET']),
-                Route(r'/join', handler=MeetingRequestController, methods=['POST'])
-            ])  
-	    ])
+
+                Route(r'/requests', handler=MeetingRequestController,
+                      methods=['GET']),
+
+                Route(r'/join', handler=MeetingRequestController,
+                      methods=['POST'])
+            ])
+        ])
     ])
 ]
 app = webapp2.WSGIApplication(FRONTEND_ROUTES, debug=True)
 
 
 TASK_ROUTES = [
-    DomainRoute(config.subdomain, [ # Allowed domains
+    DomainRoute(config.subdomain, [
 
+        # Allowed domains
         routes.PathPrefixRoute(r'/tasks', [
 
             # Notifications (Pub/Sub)
-            Route(r'/meetings/finished_event', handler='tasks.meetings.MeetingsTaskHandler:meetingFinished', methods=['POST']),
+            Route(r'/meetings/finished_event',
+                  handler='tasks.meetings.MeetingsTaskHandler:meetingFinished',
+                  methods=['POST']),
 
             # Emails
             Route(r'/email', handler=EmailTaskHandler),

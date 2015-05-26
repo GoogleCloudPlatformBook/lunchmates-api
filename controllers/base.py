@@ -2,7 +2,6 @@
 
 import webapp2
 import json
-import re
 
 from model.model import UserData
 
@@ -30,20 +29,24 @@ MESSAGE = 'message'
 
 AUTHORIZATION = 'Authorization'
 
-def login_required(handler):
-    '''Requires that a user be logged in to access the resource'''
 
-    def user_or_redirect(self, *args, **kwargs):     
+def login_required(handler):
+    """Requires that a user be logged in to access the resource"""
+
+    def user_or_redirect(self, *args, **kwargs):
         if not self.user:
             return self.redirect(users.create_login_url(self.request.path))
         else:
             return handler(self, *args, **kwargs)
 
-    return user_or_redirect 
+    return user_or_redirect
+
 
 class BaseHandler(webapp2.RequestHandler):
 
-    def __init__(self, request=None, response=None, requires_authentication=False):
+    def __init__(self, request=None, response=None,
+                 requires_authentication=False):
+
         super(BaseHandler, self).__init__(request, response)
 
         self.setupResponse()
@@ -64,9 +67,10 @@ class BaseHandler(webapp2.RequestHandler):
         self.request.path_info_pop()
         self.headers = self.request.headers
 
-        self.response.status = 404        
+        self.response.status = 404
         self.response.headers[CONTENT_TYPE_HEADER] = JSON_CONTENT_TYPE
 
-    def respond(self, status_code, body = None):
+    def respond(self, status_code, body=None):
         self.response.status = status_code
-        self.response.write(json.dumps(body, cls = JsonSerializer) if body is not None else '{}')
+        self.response.write(json.dumps(body, cls=JsonSerializer)
+                            if body is not None else '{}')
