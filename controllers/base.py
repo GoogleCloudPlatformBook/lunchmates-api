@@ -69,4 +69,4 @@ class BaseHandler(webapp2.RequestHandler):
 
     def respond(self, status_code, body = None):
         self.response.status = status_code
-        self.response.write(json.dumps(body, cls = JsonSerializer, indent=4) if body is not None else '{}')
+        self.response.write(json.dumps(body, cls = JsonSerializer) if body is not None else '{}')
