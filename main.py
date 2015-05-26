@@ -26,7 +26,7 @@ FRONTEND_ROUTES = [
 
     	routes.PathPrefixRoute(r'/api', [
 
-    		# Sessions
+    		# Sessions: Do not expose, use just a means of testing
             Route(r'/authenticate', handler=AuthHandler),
 
     		# Users

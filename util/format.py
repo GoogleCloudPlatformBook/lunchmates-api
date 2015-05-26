@@ -1,3 +1,5 @@
+import unicodedata
+
 from datetime import datetime
 
 from google.appengine.ext.ndb import GeoPt

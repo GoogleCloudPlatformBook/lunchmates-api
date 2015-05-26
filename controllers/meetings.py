@@ -18,7 +18,7 @@ class MeetingController(base.BaseHandler):
 
     def get(self):
 
-        results = memcache.get(TOP_MEETINGS_KEY)
+        results = memcache.get(TOP_MEETINGS_KEY) # TODO Handle error 
 
         if results is None:
 
