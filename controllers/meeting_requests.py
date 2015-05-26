@@ -30,6 +30,10 @@ class MeetingRequestController(base.BaseHandler):
 
         # TODO Check if there's an invitation already
         meeting = Meeting.get_by_id(int(meeting_id))
+        if meeting is None:
+            self.respond(404)
+            return
+
         join_request = MeetingRequest(parent=self.user_key, meeting=meeting.key)
         join_request.put()
 
