@@ -1,4 +1,3 @@
-application: lunch--mates
 version: 1
 runtime: python27
 api_version: 1
@@ -10,9 +9,10 @@ handlers:
 - url: /tasks/.*
   script: main.tasks
   login: admin
+  secure: always
 
 # Frontends
-- url: /.*
+- url: /api/.*
   script: main.app
 
 
