@@ -30,16 +30,18 @@ class BaseModel(ndb.Model):
       
 
 class UserData(BaseModel):
-    auth_provider = ndb.StringProperty(choices=[PROVIDER_GOOGLE, PROVIDER_FACEBOOK], required=True)
+
+    def normalize(self):
+        return unicodedata.normalize('NFKD', unicode(self.name)).encode('ascii','ignore').lower()
+
     name = ndb.StringProperty(default='')
-    search_name = ndb.ComputedProperty(lambda self: unicodedata.normalize('NFKD', unicode(self.name)).encode('ascii','ignore').lower())
+    search_name = ndb.ComputedProperty(normalize)
     email = ndb.StringProperty(required=True)
 
     @classmethod
     def create_user(cls, external_user, provider, user_key):
 
-        user = UserData(auth_provider=provider)
-        user.key = user_key
+        user = UserData(key=user_key)
         
         if provider == PROVIDER_GOOGLE:
             user.email = external_user.email()
