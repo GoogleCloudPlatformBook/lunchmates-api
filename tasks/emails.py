@@ -10,13 +10,13 @@ class EmailTaskHandler(webapp2.RequestHandler):
     def post(self):
 
         owner_id = self.request.get('owner_id')
-        owner_email = UserData.get_by_id(int(owner_id)).email
+        owner_email = UserData.get_by_id(owner_id).email
 
         if mail.is_email_valid(owner_email):
 
             nickname = self.request.get('nickname')
 
-            sender_address = 'Lunch Mate <lunchmates@appid.appspotmail.com>'
+            sender_address = 'Lunch Mate <lunchmates@lunch--mates.appspotmail.com>'
             subject = 'Request to join your meeting'
             body = '%s has requested to join your meeting!' % nickname
 
