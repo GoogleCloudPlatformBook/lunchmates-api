@@ -24,9 +24,6 @@ class AuthHandler(base.BaseHandler):
         user = key.get()
 
         if user is None: # User does not exist, go ahead and create
-
             user = UserData.create_user(self.user, model.PROVIDER_GOOGLE, key)
-            self.respond(201, user)
-                
-        else:
-            self.respond(403, {base.ERRORS: {base.MESSAGE: USER_EXISTS }})
+
+        self.respond(201, user)
