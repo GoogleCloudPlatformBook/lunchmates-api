@@ -17,7 +17,7 @@ class MeetingsTaskHandler(webapp2.RequestHandler):
     def meetingFinished(self):
 
         # Email information
-        sender_address = 'Lunch Mate <lunchmates@appid.appspotmail.com>'
+        sender_address = 'Lunch Mate <lunchmates@lunch--mates.appspotmail.com>'
         subject = 'How was your meeting'
         body = 'Rate your last meeting!'
 
@@ -26,7 +26,10 @@ class MeetingsTaskHandler(webapp2.RequestHandler):
         message_data = base64.b64decode(str(message['message']['data']))
 
         attributes = message['message']['attributes']
-        meeting_id = attributes[0]['value']
+        if len(attributes) == 0:
+            return
+
+        meeting_id = attributes['meeting_id']
 
         # Get all accepted meeting requests
         query = MeetingRequest.for_meeting(int(meeting_id), 'accepted')
