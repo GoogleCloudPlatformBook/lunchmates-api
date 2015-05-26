@@ -58,7 +58,7 @@ class BaseHandler(webapp2.RequestHandler):
 
     @webapp2.cached_property
     def user_key(self):
-        return ndb.Key(UserData, self.user.user_id())
+        return ndb.Key(UserData, str(self.user.user_id()))
 
     def setupResponse(self):
         self.request.path_info_pop()
